@@ -1,31 +1,27 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from checkout.models import Pedido
-from produtos.models import Produto
 
 
 @login_required
 def finalizar_pedido(request):
-    carrinho = request.session.get('carrinho', {})
-    total = 0
-
-    for produto_id, qtd in carrinho.items():
-        produto = Produto.objects.get(id=produto_id)
-        total += produto.preco * qtd
-
     if request.method == 'POST':
-        Pedido.objects.create(
-            usuario=request.user,
-            endereco=request.POST['endereco'],
-            telefone=request.POST['telefone'],
-            metodo_pagamento=request.POST['metodo_pagamento'],
-            total=total
+        endereco = request.POST.get('endereco')
+        telefone = request.POST.get('telefone')
+        metodo = request.POST.get('metodo_pagamento')
+
+        if not endereco or not telefone or not metodo:
+            messages.error(request, 'Preencha todos os campos.')
+            return redirect('checkout')
+
+        # Limpa carrinho
+        request.session['carrinho'] = {}
+
+        messages.success(
+            request,
+            'Pedido confirmado! 🚚 Previsão de entrega: 1 a 2 horas.'
         )
 
-        del request.session['carrinho']
         return redirect('lista_produtos')
 
-    return render(request, 'checkout/finalizar.html', {'total': total})
-
-def checkout(request):
-    return render(request, 'checkout/checkout.html')
+    return render(request, 'checkout/finalizar.html')

@@ -1,40 +1,33 @@
 {% extends 'base.html' %}
 
 {% block conteudo %}
-<h2 class="mb-4">Medicamentos Disponíveis</h2>
+  <h2 class="mb-4">Medicamentos Disponíveis</h2>
 
-<div class="row">
-  {% for produto in produtos %}
-    <div class="col-md-4">
-      <div class="card mb-4 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title">{{ produto.nome }}</h5>
-          <p class="card-text">{{ produto.descricao }}</p>
-          <p class="fw-bold">R$ {{ produto.preco }}</p>
+  <div class="row">
+    {% for produto in produtos %}
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">{{ produto.nome }}</h5>
+            <p class="card-text">{{ produto.descricao }}</p>
+            <p class="fw-bold">R$ {{ produto.preco }}</p>
 
-          {% if user.is_authenticated %}
-            <div class="d-flex gap-2">
-              <!-- Adicionar ao carrinho -->
-             <a href="{% url 'carrinho:adicionar' produto.id %}" class="btn btn-primary">
-    🛒 Adicionar ao carrinho
-</a>
+            {% if user.is_authenticated %}
+              <div class="d-flex gap-2">
+                <!-- Adicionar ao carrinho -->
+                <a href="{% url 'carrinho:adicionar' produto.id %}" class="btn btn-primary">🛒 Adicionar ao carrinho</a>
 
-
-              <!-- Comprar agora -->
-              <a href="/comprar/{{ produto.id }}/" class="btn btn-danger">
-                Comprar
-              </a>
-            </div>
-          {% else %}
-            <a href="/login/" class="btn btn-secondary">
-              Faça login para comprar
-            </a>
-          {% endif %}
+                <!-- Comprar agora -->
+                <a href="/comprar/{{ produto.id }}/" class="btn btn-danger">Comprar</a>
+              </div>
+            {% else %}
+              <a href="{% url 'usuarios:login' %}" class="btn btn-secondary">Faça login para comprar</a>
+            {% endif %}
+          </div>
         </div>
       </div>
-    </div>
-  {% empty %}
-    <p>Nenhum produto cadastrado.</p>
-  {% endfor %}
-</div>
+    {% empty %}
+      <p>Nenhum produto cadastrado.</p>
+    {% endfor %}
+  </div>
 {% endblock %}

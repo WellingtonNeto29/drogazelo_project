@@ -1,11 +1,53 @@
 {% extends 'base.html' %}
 
 {% block conteudo %}
-<h2>Cadastro</h2>
+<div class="container mt-5" style="max-width: 420px;">
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-danger">Cadastrar</button>
-</form>
+    <h2 class="mb-4 text-center">Cadastro</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-info">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label">Usuário</label>
+            <input
+                type="text"
+                name="username"
+                class="form-control"
+                placeholder="Digite seu usuário"
+                required
+            >
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Senha</label>
+            <input
+                type="password"
+                name="senha"
+                class="form-control"
+                placeholder="Digite sua senha"
+                required
+            >
+        </div>
+
+        <button type="submit" class="btn btn-danger w-100">
+            Cadastrar
+        </button>
+    </form>
+
+    <div class="text-center mt-3">
+        <a href="{% url 'usuarios:login' %}">
+            Já tem conta? Faça login
+        </a>
+    </div>
+
+</div>
 {% endblock %}

@@ -1,16 +1,25 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from produtos.models import Produto
 
 
 @login_required
 def adicionar_ao_carrinho(request, produto_id):
     carrinho = request.session.get('carrinho', {})
+
     produto_id = str(produto_id)
     carrinho[produto_id] = carrinho.get(produto_id, 0) + 1
+
     request.session['carrinho'] = carrinho
     request.session.modified = True
-    return redirect('ver_carrinho')
+
+    # mensagem de sucesso
+    messages.success(request, 'Produto adicionado ao carrinho!')
+
+    # volta para a página anterior
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
 
 
 @login_required
@@ -49,7 +58,8 @@ def alterar_quantidade(request, produto_id, acao):
 
     request.session['carrinho'] = carrinho
     request.session.modified = True
-    return redirect('ver_carrinho')
+
+    return redirect('carrinho:ver')
 
 
 @login_required
@@ -62,4 +72,5 @@ def remover_do_carrinho(request, produto_id):
 
     request.session['carrinho'] = carrinho
     request.session.modified = True
-    return redirect('ver_carrinho')
+
+    return redirect('carrinho:ver')

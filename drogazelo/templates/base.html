@@ -5,50 +5,63 @@
     <meta charset="UTF-8">
     <title>Drogazelo</title>
 
-    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
   <div class="container">
+
     <a class="navbar-brand d-flex align-items-center" href="/">
         <img src="{% static 'images/logo.png' %}" height="40" class="me-2">
         Drogazelo
     </a>
-<div class="topo">
-  <span>Olá, {{ user.username }}</span>
 
-  <a href="{% url 'ver_carrinho' %}" class="btn btn-light">
-    🛒 Carrinho
-</a>
+    <div class="d-flex align-items-center gap-2">
+      {% if user.is_authenticated %}
+        <span class="text-white">Olá, {{ user.username }}</span>
 
-  </a>
+        <a href="{% url 'carrinho:ver' %}" class="btn btn-light">
+          🛒 Carrinho
+        </a>
 
-  <a href="{% url 'logout' %}" class="btn btn-danger">Sair</a>
-</div>
-
-    <div>
-    {% if user.is_authenticated %}
-        <span class="text-white me-3">
-            Olá, {{ user.username }}
-        </span>
-        <a href="/logout/" class="btn btn-outline-light">Sair</a>
-    {% else %}
-        <a href="/login/" class="btn btn-outline-light me-2">Login</a>
-        <a href="/cadastro/" class="btn btn-light text-danger">Cadastrar</a>
-    {% endif %}
-</div>
+        <form action="{% url 'usuarios:logout' %}" method="post" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-outline-light">
+            Logout
+          </button>
+        </form>
+      {% else %}
+        <a href="{% url 'usuarios:login' %}" class="btn btn-outline-light">
+          Login
+        </a>
+        <a href="{% url 'usuarios:cadastro' %}" class="btn btn-light text-danger">
+          Cadastrar
+        </a>
+      {% endif %}
+    </div>
 
   </div>
 </nav>
 
-<div class="container mt-4">
-    {% block conteudo %}{% endblock %}
+<!-- 🔔 MENSAGENS (AQUI ESTAVA O PROBLEMA) -->
+<div class="container mt-3">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
 </div>
 
+<div class="container mt-4">
+  {% block conteudo %}{% endblock %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

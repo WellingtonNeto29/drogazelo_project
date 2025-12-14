@@ -3,6 +3,7 @@
 
 {% block conteudo %}
 <div class="container mt-4">
+
     <h2 class="mb-4">🛒 Meu Carrinho</h2>
 
     {% if itens %}
@@ -10,28 +11,34 @@
             <thead class="table-light">
                 <tr>
                     <th>Produto</th>
-                    <th style="width: 160px;">Quantidade</th>
+                    <th class="text-center">Quantidade</th>
                     <th>Preço</th>
                     <th>Subtotal</th>
-                    <th>Ações</th>
+                    <th class="text-center">Ações</th>
                 </tr>
             </thead>
+
             <tbody>
                 {% for item in itens %}
                 <tr>
                     <td>{{ item.produto.nome }}</td>
 
                     <td class="text-center">
-                        <a href="{% url 'alterar' item.produto.id 'menos' %}" class="btn btn-sm btn-outline-danger">➖</a>
+                        <a href="{% url 'carrinho:alterar' item.produto.id 'menos' %}"
+                           class="btn btn-sm btn-outline-secondary">➖</a>
+
                         <span class="mx-2">{{ item.quantidade }}</span>
-                        <a href="{% url 'alterar' item.produto.id 'mais' %}" class="btn btn-sm btn-outline-success">➕</a>
+
+                        <a href="{% url 'carrinho:alterar' item.produto.id 'mais' %}"
+                           class="btn btn-sm btn-outline-secondary">➕</a>
                     </td>
 
                     <td>R$ {{ item.produto.preco }}</td>
                     <td>R$ {{ item.subtotal }}</td>
 
-                    <td>
-                        <a href="{% url 'remover' item.produto.id %}" class="btn btn-sm btn-danger">
+                    <td class="text-center">
+                        <a href="{% url 'carrinho:remover' item.produto.id %}"
+                           class="btn btn-sm btn-danger">
                             ❌ Remover
                         </a>
                     </td>
@@ -55,5 +62,6 @@
             Seu carrinho está vazio.
         </div>
     {% endif %}
+
 </div>
 {% endblock %}

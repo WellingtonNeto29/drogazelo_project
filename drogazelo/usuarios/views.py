@@ -1,50 +1,46 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse   
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-
-
-
-def login_view(request):
-    erro = False
-
-    if request.method == 'POST':
-        user = authenticate(
-            request,
-            username=request.POST.get('username'),
-            password=request.POST.get('password')
-        )
-
-        if user:
-            login(request, user)
-            return redirect('lista_produtos')
-        else:
-            erro = True
-
-    return render(request, 'usuarios/login.html', {'erro': erro})
-
-
-def logout_view(request):
-    logout(request)
-    return redirect('login')
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
 
 def cadastro(request):
-    erro = False
-
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
 
+        if not username or not password:
+            messages.error(request, 'Preencha todos os campos')
+            return redirect('usuarios:cadastro')
+
         if User.objects.filter(username=username).exists():
-            erro = True
-        else:
-            User.objects.create_user(username=username, password=password)
-            return redirect('login')
+            messages.error(request, 'Usuário já existe')
+            return redirect('usuarios:cadastro')
 
-    return render(request, 'usuarios/cadastro.html', {'erro': erro})
+        User.objects.create_user(username=username, password=password)
+        messages.success(request, 'Cadastro realizado com sucesso')
+        return redirect('usuarios:login')
+
+    return render(request, 'usuarios/cadastro.html')
 
 
-def comprar_produto(request, produto_id):
-    # lógica para comprar o produto
-    return HttpResponse(f"Produto {produto_id} comprado!")
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user:
+            login(request, user)
+            return redirect('lista_produtos')
+
+        messages.error(request, 'Usuário ou senha inválidos')
+        return redirect('usuarios:login')
+
+    return render(request, 'usuarios/login.html')
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('usuarios:login')
