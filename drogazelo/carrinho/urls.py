@@ -1,10 +1,14 @@
-from django.contrib import admin
-from django.urls import path, include
-from produtos.views import lista_produtos
+from django.urls import path
+from .views import (
+    adicionar_ao_carrinho,
+    remover_do_carrinho,
+    alterar_quantidade,
+    ver_carrinho
+)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', lista_produtos, name='lista_produtos'),
-    path('', include('usuarios.urls')),
-    path('', include('carrinho.urls')),
+    path('carrinho/', ver_carrinho, name='ver_carrinho'),
+    path('adicionar/<int:produto_id>/', adicionar_ao_carrinho, name='adicionar'),
+    path('remover/<int:produto_id>/', remover_do_carrinho, name='remover'),
+    path('alterar/<int:produto_id>/<str:acao>/', alterar_quantidade, name='alterar'),
 ]

@@ -3,13 +3,28 @@
 {% block conteudo %}
 <h2>Meu Carrinho</h2>
 
-{% if carrinho %}
-  <ul>
-    {% for produto_id, quantidade in carrinho.items %}
-      <li>Produto ID {{ produto_id }} - Quantidade: {{ quantidade }}</li>
-    {% endfor %}
-  </ul>
+{% if produtos %}
+<table class="table">
+  <tr>
+    <th>Produto</th>
+    <th>Qtd</th>
+    <th>Preço</th>
+    <th>Subtotal</th>
+  </tr>
+
+  {% for produto in produtos %}
+  <tr>
+    <td>{{ produto.nome }}</td>
+    <td>{{ produto.quantidade }}</td>
+    <td>R$ {{ produto.preco }}</td>
+    <td>R$ {{ produto.subtotal }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h4>Total: R$ {{ total }}</h4>
+
 {% else %}
-  <p>Seu carrinho está vazio.</p>
+<p>Seu carrinho está vazio.</p>
 {% endif %}
 {% endblock %}

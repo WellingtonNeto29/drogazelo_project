@@ -19,6 +19,15 @@
         <img src="{% static 'images/logo.png' %}" height="40" class="me-2">
         Drogazelo
     </a>
+<div class="topo">
+  <span>Olá, {{ user.username }}</span>
+
+  <a href="{% url 'ver_carrinho' %}" class="btn btn-light">
+      🛒 Carrinho
+  </a>
+
+  <a href="{% url 'logout' %}" class="btn btn-danger">Sair</a>
+</div>
 
     <div>
     {% if user.is_authenticated %}

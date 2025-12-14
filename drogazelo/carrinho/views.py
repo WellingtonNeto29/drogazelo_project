@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from produtos.models import Produto
 
@@ -7,28 +7,39 @@ from produtos.models import Produto
 def adicionar_ao_carrinho(request, produto_id):
     carrinho = request.session.get('carrinho', {})
 
-    carrinho[str(produto_id)] = carrinho.get(str(produto_id), 0) + 1
+    produto_id = str(produto_id)
+    carrinho[produto_id] = carrinho.get(produto_id, 0) + 1
 
     request.session['carrinho'] = carrinho
-
     return redirect('lista_produtos')
 
-from django.shortcuts import redirect
 
-def comprar_agora(request, produto_id):
-    # cria um carrinho novo só com esse produto
-    request.session['carrinho'] = {str(produto_id): 1}
+@login_required
+def remover_do_carrinho(request, produto_id):
+    carrinho = request.session.get('carrinho', {})
+    produto_id = str(produto_id)
+
+    if produto_id in carrinho:
+        del carrinho[produto_id]
+
+    request.session['carrinho'] = carrinho
     return redirect('ver_carrinho')
 
 
 @login_required
-def comprar_agora(request, produto_id):
-    carrinho = {}
+def alterar_quantidade(request, produto_id, acao):
+    carrinho = request.session.get('carrinho', {})
+    produto_id = str(produto_id)
 
-    carrinho[str(produto_id)] = 1
+    if produto_id in carrinho:
+        if acao == 'mais':
+            carrinho[produto_id] += 1
+        elif acao == 'menos':
+            carrinho[produto_id] -= 1
+            if carrinho[produto_id] <= 0:
+                del carrinho[produto_id]
 
     request.session['carrinho'] = carrinho
-
     return redirect('ver_carrinho')
 
 
@@ -40,25 +51,15 @@ def ver_carrinho(request):
 
     for produto_id, quantidade in carrinho.items():
         produto = get_object_or_404(Produto, id=produto_id)
+        subtotal = produto.preco * quantidade
+
         produto.quantidade = quantidade
-        produto.subtotal = produto.preco * quantidade
-        total += produto.subtotal
+        produto.subtotal = subtotal
+
+        total += subtotal
         produtos.append(produto)
 
     return render(request, 'carrinho/carrinho.html', {
         'produtos': produtos,
         'total': total
     })
-    from django.shortcuts import redirect, get_object_or_404
-from produtos.models import Produto
-
-def adicionar_ao_carrinho(request, produto_id):
-    carrinho = request.session.get('carrinho', [])
-
-    produto = get_object_or_404(Produto, id=produto_id)
-    carrinho.append(produto.id)
-
-    request.session['carrinho'] = carrinho
-
-    return redirect('lista_produtos')
-
