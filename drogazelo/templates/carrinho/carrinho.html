@@ -1,67 +1,46 @@
 {% extends 'base.html' %}
-{% load static %}
 
 {% block conteudo %}
-<div class="container mt-4">
+<h2 class="mb-4">🛒 Meu Carrinho</h2>
 
-    <h2 class="mb-4">🛒 Meu Carrinho</h2>
+{% if itens %}
+<table class="table table-bordered align-middle">
+    <thead>
+        <tr>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Preço</th>
+            <th>Subtotal</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for item in itens %}
+        <tr>
+            <td>{{ item.produto.nome }}</td>
+            <td>{{ item.quantidade }}</td>
+            <td>R$ {{ item.produto.preco }}</td>
+            <td>R$ {{ item.subtotal }}</td>
+            <td>
+                <a href="{% url 'carrinho:remover' item.produto.id %}" class="btn btn-sm btn-danger">
+                    ❌ Remover
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
-    {% if itens %}
-        <table class="table table-bordered align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th>Produto</th>
-                    <th class="text-center">Quantidade</th>
-                    <th>Preço</th>
-                    <th>Subtotal</th>
-                    <th class="text-center">Ações</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                {% for item in itens %}
-                <tr>
-                    <td>{{ item.produto.nome }}</td>
-
-                    <td class="text-center">
-                        <a href="{% url 'carrinho:alterar' item.produto.id 'menos' %}"
-                           class="btn btn-sm btn-outline-secondary">➖</a>
-
-                        <span class="mx-2">{{ item.quantidade }}</span>
-
-                        <a href="{% url 'carrinho:alterar' item.produto.id 'mais' %}"
-                           class="btn btn-sm btn-outline-secondary">➕</a>
-                    </td>
-
-                    <td>R$ {{ item.produto.preco }}</td>
-                    <td>R$ {{ item.subtotal }}</td>
-
-                    <td class="text-center">
-                        <a href="{% url 'carrinho:remover' item.produto.id %}"
-                           class="btn btn-sm btn-danger">
-                            ❌ Remover
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <div class="text-end mt-3">
-            <h4>Total: <strong>R$ {{ total }}</strong></h4>
-        </div>
-
-        <div class="text-end mt-4">
-            <a href="{% url 'checkout' %}" class="btn btn-success btn-lg">
-                📍 Finalizar Pedido
-            </a>
-        </div>
-
-    {% else %}
-        <div class="alert alert-info">
-            Seu carrinho está vazio.
-        </div>
-    {% endif %}
-
+<div class="text-end">
+    <h4>Total: <strong>R$ {{ total }}</strong></h4>
+    <a href="{% url 'checkout' %}" class="btn btn-success btn-lg mt-3">
+        📦 Finalizar Pedido
+    </a>
 </div>
+
+{% else %}
+<div class="alert alert-info">
+    Seu carrinho está vazio.
+</div>
+{% endif %}
 {% endblock %}

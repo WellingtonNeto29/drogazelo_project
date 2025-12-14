@@ -1,44 +1,38 @@
 {% extends 'base.html' %}
-{% load static %}
 
 {% block conteudo %}
-<div class mesmo="container mt-4">
+<h2 class="mb-4">📦 Finalizar Pedido</h2>
 
-    <h2 class="mb-4">📦 Finalizar Pedido</h2>
+<div class="alert alert-info">
+    ⏱️ <strong>Previsão de entrega:</strong> entre <strong>1 a 2 horas</strong>.
+</div>
 
-    <!-- Mensagem de previsão -->
-    <div class="alert alert-info">
-        ⏱️ <strong>Previsão de entrega:</strong> entre <strong>1 a 2 horas</strong>.
+<form method="POST" class="card p-4">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label class="form-label">Endereço</label>
+        <textarea name="endereco" class="form-control" required></textarea>
     </div>
 
-    <form method="POST">
-        {% csrf_token %}
+    <div class="mb-3">
+        <label class="form-label">Telefone</label>
+        <input type="text" name="telefone" class="form-control" required>
+    </div>
 
-        <div class="mb-3">
-            <label class="form-label">Endereço de entrega</label>
-            <textarea name="endereco" class="form-control" rows="3" required></textarea>
-        </div>
+    <div class="mb-3">
+        <label class="form-label">Pagamento</label>
+        <select name="metodo_pagamento" class="form-select" required>
+            <option value="">Selecione</option>
+            <option value="pix">Pix</option>
+            <option value="cartao">Cartão</option>
+            <option value="boleto">Boleto</option>
+            <option value="dinheiro">Dinheiro</option>
+        </select>
+    </div>
 
-        <div class="mb-3">
-            <label class="form-label">Telefone</label>
-            <input type="text" name="telefone" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Método de pagamento</label>
-            <select name="metodo_pagamento" class="form-select" required>
-                <option value="">Selecione</option>
-                <option value="pix">Pix</option>
-                <option value="cartao">Cartão de crédito</option>
-                <option value="boleto">Boleto</option>
-                <option value="dinheiro">Dinheiro</option>
-            </select>
-        </div>
-
-        <button type="submit" class="btn btn-success btn-lg">
-            ✅ Confirmar Pedido
-        </button>
-    </form>
-
-</div>
+    <button class="btn btn-success btn-lg">
+        ✅ Confirmar Pedido
+    </button>
+</form>
 {% endblock %}

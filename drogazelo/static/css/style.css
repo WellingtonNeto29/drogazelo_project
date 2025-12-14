@@ -1,12 +1,88 @@
 body {
-    background-color: #f8f9fa;
+    background-color: #f5f6f8;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* NAVBAR */
+.navbar {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
 }
 
 .navbar-brand {
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
 }
 
+/* BOTÕES */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.btn-success {
+    background-color: #1f9d55;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #168a47;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+/* CARDS */
 .card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+/* TABELA */
+.table {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table th {
+    background-color: #f1f1f1;
+}
+
+/* ALERTAS */
+.alert {
     border-radius: 10px;
+}
+
+/* FORM */
+.form-control,
+.form-select,
+textarea {
+    border-radius: 8px;
+}
+
+/* TÍTULOS */
+h2, h4 {
+    font-weight: bold;
+    color: #333;
+}
+
+/* FOOTER SIMPLES */
+.footer {
+    margin-top: 60px;
+    padding: 20px;
+    background-color: #dc3545;
+    color: white;
+    text-align: center;
 }

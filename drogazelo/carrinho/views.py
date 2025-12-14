@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from produtos.models import Produto
 
 
@@ -14,12 +13,23 @@ def adicionar_ao_carrinho(request, produto_id):
     request.session['carrinho'] = carrinho
     request.session.modified = True
 
-    # mensagem de sucesso
-    messages.success(request, 'Produto adicionado ao carrinho!')
+    return redirect('lista_produtos')
 
-    # volta para a página anterior
-    return redirect(request.META.get('HTTP_REFERER', '/'))
 
+@login_required
+def comprar_agora(request, produto_id):
+    """
+    Adiciona o produto ao carrinho e redireciona direto para o carrinho
+    """
+    carrinho = request.session.get('carrinho', {})
+
+    produto_id = str(produto_id)
+    carrinho[produto_id] = carrinho.get(produto_id, 0) + 1
+
+    request.session['carrinho'] = carrinho
+    request.session.modified = True
+
+    return redirect('carrinho:ver')
 
 
 @login_required
@@ -46,24 +56,7 @@ def ver_carrinho(request):
 
 
 @login_required
-def alterar_quantidade(request, produto_id, acao):
-    carrinho = request.session.get('carrinho', {})
-    produto_id = str(produto_id)
-
-    if produto_id in carrinho:
-        if acao == 'mais':
-            carrinho[produto_id] += 1
-        elif acao == 'menos' and carrinho[produto_id] > 1:
-            carrinho[produto_id] -= 1
-
-    request.session['carrinho'] = carrinho
-    request.session.modified = True
-
-    return redirect('carrinho:ver')
-
-
-@login_required
-def remover_do_carrinho(request, produto_id):
+def remover(request, produto_id):
     carrinho = request.session.get('carrinho', {})
     produto_id = str(produto_id)
 

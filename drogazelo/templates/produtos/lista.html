@@ -1,33 +1,36 @@
 {% extends 'base.html' %}
 
 {% block conteudo %}
-  <h2 class="mb-4">Medicamentos Disponíveis</h2>
+<h2 class="mb-4">💊 Medicamentos Disponíveis</h2>
 
-  <div class="row">
-    {% for produto in produtos %}
-      <div class="col-md-4">
-        <div class="card mb-4 shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">{{ produto.nome }}</h5>
-            <p class="card-text">{{ produto.descricao }}</p>
-            <p class="fw-bold">R$ {{ produto.preco }}</p>
+<div class="row">
+{% for produto in produtos %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ produto.nome }}</h5>
+                <p class="card-text text-muted">{{ produto.descricao }}</p>
 
-            {% if user.is_authenticated %}
-              <div class="d-flex gap-2">
-                <!-- Adicionar ao carrinho -->
-                <a href="{% url 'carrinho:adicionar' produto.id %}" class="btn btn-primary">🛒 Adicionar ao carrinho</a>
+                <h5 class="mt-auto mb-3">R$ {{ produto.preco }}</h5>
 
-                <!-- Comprar agora -->
-                <a href="/comprar/{{ produto.id }}/" class="btn btn-danger">Comprar</a>
-              </div>
-            {% else %}
-              <a href="{% url 'usuarios:login' %}" class="btn btn-secondary">Faça login para comprar</a>
-            {% endif %}
-          </div>
+                {% if user.is_authenticated %}
+                <div class="d-grid gap-2">
+                    <a href="{% url 'carrinho:adicionar' produto.id %}" class="btn btn-outline-danger">
+                        🛒 Adicionar ao carrinho
+                    </a>
+
+                    <a href="{% url 'carrinho:comprar' produto.id %}" class="btn btn-danger">
+                        ⚡ Comprar agora
+                    </a>
+                </div>
+                {% else %}
+                    <a href="{% url 'usuarios:login' %}" class="btn btn-secondary mt-2">
+                        Faça login para comprar
+                    </a>
+                {% endif %}
+            </div>
         </div>
-      </div>
-    {% empty %}
-      <p>Nenhum produto cadastrado.</p>
-    {% endfor %}
-  </div>
+    </div>
+{% endfor %}
+</div>
 {% endblock %}
