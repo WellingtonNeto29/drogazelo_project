@@ -21,9 +21,17 @@
     </a>
 
     <div>
+    {% if user.is_authenticated %}
+        <span class="text-white me-3">
+            Olá, {{ user.username }}
+        </span>
+        <a href="/logout/" class="btn btn-outline-light">Sair</a>
+    {% else %}
         <a href="/login/" class="btn btn-outline-light me-2">Login</a>
         <a href="/cadastro/" class="btn btn-light text-danger">Cadastrar</a>
-    </div>
+    {% endif %}
+</div>
+
   </div>
 </nav>
 

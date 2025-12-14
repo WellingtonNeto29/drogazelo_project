@@ -13,6 +13,7 @@ def cadastro(request):
 
     return render(request, 'usuarios/cadastro.html', {'form': form})
 
+
 def login_view(request):
     erro = False
 
@@ -22,5 +23,16 @@ def login_view(request):
 
         user = authenticate(request, username=usuario, password=senha)
 
-        if user:
-            login(request,)
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        else:
+            erro = True
+
+    
+    return render(request, 'usuarios/login.html', {'erro': erro})
+from django.contrib.auth import logout
+
+def logout_view(request):
+    logout(request)
+    return redirect('/login/')
