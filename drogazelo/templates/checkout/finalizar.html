@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+<h2>Finalizar Pedido</h2>
+
+<p><strong>Total:</strong> R$ {{ total }}</p>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <label>Endereço</label>
+    <textarea name="endereco" required></textarea>
+
+    <label>Telefone</label>
+    <input type="text" name="telefone" required>
+
+    <label>Método de pagamento</label>
+    <select name="metodo_pagamento" required>
+        <option value="pix">Pix</option>
+        <option value="cartao">Cartão de crédito</option>
+        <option value="boleto">Boleto</option>
+        <option value="dinheiro">Dinheiro</option>
+    </select>
+
+    <button type="submit">Confirmar Pedido</button>
+</form>
+{% endblock %}
