@@ -26,3 +26,6 @@ def finalizar_pedido(request):
         return redirect('lista_produtos')
 
     return render(request, 'checkout/finalizar.html', {'total': total})
+
+def checkout(request):
+    return render(request, 'checkout/checkout.html')

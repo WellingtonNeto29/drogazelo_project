@@ -15,9 +15,10 @@
           {% if user.is_authenticated %}
             <div class="d-flex gap-2">
               <!-- Adicionar ao carrinho -->
-              <a href="/adicionar/{{ produto.id }}/" class="btn btn-outline-danger">
-                Adicionar ao carrinho
-              </a>
+             <a href="{% url 'carrinho:adicionar' produto.id %}" class="btn btn-primary">
+    🛒 Adicionar ao carrinho
+</a>
+
 
               <!-- Comprar agora -->
               <a href="/comprar/{{ produto.id }}/" class="btn btn-danger">

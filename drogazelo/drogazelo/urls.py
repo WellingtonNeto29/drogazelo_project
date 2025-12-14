@@ -4,10 +4,12 @@ from produtos.views import lista_produtos
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', lista_produtos, name='lista_produtos'),
-    path('', include('usuarios.urls')),
-    path('', include('carrinho.urls')),
-    path('', include('checkout.urls')),
-    path('checkout/', include('checkout.urls')),
 
+    # Página inicial
+    path('', lista_produtos, name='lista_produtos'),
+
+    # Apps com prefixo
+    path('usuarios/', include('usuarios.urls')),
+    path('carrinho/', include('carrinho.urls')),
+    path('checkout/', include('checkout.urls')),
 ]
