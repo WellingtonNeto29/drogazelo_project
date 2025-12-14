@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drogazelo</title>
+</head>
+<body>
+    <h1>Drogazelo - Medicamentos</h1>
+
+    {% for produto in produtos %}
+        <div>
+            <h3>{{ produto.nome }}</h3>
+            <p>{{ produto.descricao }}</p>
+            <p>R$ {{ produto.preco }}</p>
+        </div>
+    {% endfor %}
+</body>
+</html>
