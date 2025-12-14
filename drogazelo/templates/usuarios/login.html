@@ -7,18 +7,12 @@
 <div class="alert alert-danger">Usuário ou senha inválidos</div>
 {% endif %}
 
-<form method="post">
+<form method="POST" action="">
     {% csrf_token %}
-    <div class="mb-3">
-        <label>Usuário</label>
-        <input type="text" name="username" class="form-control">
-    </div>
 
-    <div class="mb-3">
-        <label>Senha</label>
-        <input type="password" name="senha" class="form-control">
-    </div>
+    <input type="text" name="username" placeholder="Usuário">
+    <input type="password" name="password" placeholder="Senha">
 
-    <button class="btn btn-danger">Entrar</button>
+    <button type="submit">Entrar</button>
 </form>
 {% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+<h2>Meu Carrinho</h2>
+
+{% if carrinho %}
+  <ul>
+    {% for produto_id, quantidade in carrinho.items %}
+      <li>Produto ID {{ produto_id }} - Quantidade: {{ quantidade }}</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Seu carrinho está vazio.</p>
+{% endif %}
+{% endblock %}
