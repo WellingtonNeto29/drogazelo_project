@@ -6,24 +6,21 @@ from produtos.models import Produto
 @login_required
 def adicionar_ao_carrinho(request, produto_id):
     carrinho = request.session.get('carrinho', {})
-
     produto_id = str(produto_id)
+
     carrinho[produto_id] = carrinho.get(produto_id, 0) + 1
 
     request.session['carrinho'] = carrinho
     request.session.modified = True
 
-    return redirect('lista_produtos')
+    return redirect('produtos:lista')
 
 
 @login_required
 def comprar_agora(request, produto_id):
-    """
-    Adiciona o produto ao carrinho e redireciona direto para o carrinho
-    """
     carrinho = request.session.get('carrinho', {})
-
     produto_id = str(produto_id)
+
     carrinho[produto_id] = carrinho.get(produto_id, 0) + 1
 
     request.session['carrinho'] = carrinho
@@ -53,6 +50,25 @@ def ver_carrinho(request):
         'itens': itens,
         'total': total
     })
+
+
+@login_required
+def alterar(request, produto_id, acao):
+    carrinho = request.session.get('carrinho', {})
+    produto_id = str(produto_id)
+
+    if produto_id in carrinho:
+        if acao == 'mais':
+            carrinho[produto_id] += 1
+        elif acao == 'menos':
+            carrinho[produto_id] -= 1
+            if carrinho[produto_id] <= 0:
+                del carrinho[produto_id]
+
+    request.session['carrinho'] = carrinho
+    request.session.modified = True
+
+    return redirect('carrinho:ver')
 
 
 @login_required

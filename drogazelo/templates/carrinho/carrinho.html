@@ -4,43 +4,41 @@
 <h2 class="mb-4">🛒 Meu Carrinho</h2>
 
 {% if itens %}
-<table class="table table-bordered align-middle">
-    <thead>
-        <tr>
-            <th>Produto</th>
-            <th>Quantidade</th>
-            <th>Preço</th>
-            <th>Subtotal</th>
-            <th>Ação</th>
-        </tr>
-    </thead>
-    <tbody>
     {% for item in itens %}
-        <tr>
-            <td>{{ item.produto.nome }}</td>
-            <td>{{ item.quantidade }}</td>
-            <td>R$ {{ item.produto.preco }}</td>
-            <td>R$ {{ item.subtotal }}</td>
-            <td>
-                <a href="{% url 'carrinho:remover' item.produto.id %}" class="btn btn-sm btn-danger">
-                    ❌ Remover
-                </a>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+    <div class="card mb-3 p-3">
+        <h5 class="mb-2">{{ item.produto.nome }}</h5>
 
-<div class="text-end">
-    <h4>Total: <strong>R$ {{ total }}</strong></h4>
-    <a href="{% url 'checkout' %}" class="btn btn-success btn-lg mt-3">
-        📦 Finalizar Pedido
-    </a>
-</div>
+        <!-- CONTROLE DE QUANTIDADE -->
+        <div class="d-flex align-items-center gap-3">
+            <a href="{% url 'carrinho:alterar' item.produto.id 'menos' %}"
+               class="btn btn-danger btn-quantidade">−</a>
+
+            <strong>{{ item.quantidade }}</strong>
+
+            <a href="{% url 'carrinho:alterar' item.produto.id 'mais' %}"
+               class="btn btn-success btn-quantidade">+</a>
+        </div>
+
+        <p class="mt-2 mb-0 text-muted">
+            Subtotal: <strong>R$ {{ item.subtotal }}</strong>
+        </p>
+    </div>
+    {% endfor %}
+
+    <!-- TOTAL -->
+    <h4 class="mt-4">Total: R$ {{ total }}</h4>
+
+    <!-- FINALIZAR COMPRA -->
+    <div class="text-end mt-4">
+        <a href="{% url 'checkout:checkout' %}" class="btn btn-success btn-finalizar">
+            Finalizar Compra
+        </a>
+    </div>
 
 {% else %}
-<div class="alert alert-info">
-    Seu carrinho está vazio.
-</div>
+    <div class="alert alert-info">
+        Seu carrinho está vazio.
+    </div>
 {% endif %}
+
 {% endblock %}

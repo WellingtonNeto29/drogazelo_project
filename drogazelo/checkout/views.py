@@ -1,27 +1,42 @@
-from django.shortcuts import render, redirect
-from django.contrib import messages
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-
+from produtos.models import Produto
 
 @login_required
-def finalizar_pedido(request):
+def checkout_view(request):
+    carrinho = request.session.get('carrinho', {})
+    itens = []
+    total = 0
+
+    # Montar itens do carrinho
+    for produto_id, quantidade in carrinho.items():
+        produto = Produto.objects.get(id=produto_id)
+        subtotal = produto.preco * quantidade
+        total += subtotal
+
+        itens.append({
+            'produto': produto,
+            'quantidade': quantidade,
+            'subtotal': subtotal
+        })
+
+    # SE FOR POST → confirmar pedido
     if request.method == 'POST':
-        endereco = request.POST.get('endereco')
+        nome = request.POST.get('nome')
         telefone = request.POST.get('telefone')
-        metodo = request.POST.get('metodo_pagamento')
+        endereco = request.POST.get('endereco')
+        pagamento = request.POST.get('pagamento')
 
-        if not endereco or not telefone or not metodo:
-            messages.error(request, 'Preencha todos os campos.')
-            return redirect('checkout')
+        # 🔹 aqui futuramente entra banco de dados
 
-        # Limpa carrinho
+        # Limpar carrinho
         request.session['carrinho'] = {}
+        request.session.modified = True
 
-        messages.success(
-            request,
-            'Pedido confirmado! 🚚 Previsão de entrega: 1 a 2 horas.'
-        )
+        return render(request, 'checkout/sucesso.html')
 
-        return redirect('lista_produtos')
-
-    return render(request, 'checkout/finalizar.html')
+    # SE FOR GET → mostrar formulário
+    return render(request, 'checkout/checkout.html', {
+        'itens': itens,
+        'total': total
+    })

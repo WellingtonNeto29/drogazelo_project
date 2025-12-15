@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+<div class="container mt-4">
+
+  <h2>Finalizar Pedido</h2>
+
+  <h4 class="mt-4">Resumo do Pedido</h4>
+  <ul class="list-group mb-4">
+    {% for item in itens %}
+      <li class="list-group-item d-flex justify-content-between">
+        <span>{{ item.produto.nome }} ({{ item.quantidade }}x)</span>
+        <strong>R$ {{ item.subtotal }}</strong>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <h4>Total: R$ {{ total }}</h4>
+
+  <hr>
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label class="form-label">Nome</label>
+      <input type="text" name="nome" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Telefone</label>
+      <input type="text" name="telefone" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Endereço</label>
+      <textarea name="endereco" class="form-control" required></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Forma de Pagamento</label>
+      <select name="pagamento" class="form-select" required>
+        <option value="pix">PIX</option>
+        <option value="credito">Cartão de Crédito</option>
+        <option value="debito">Cartão de Débito</option>
+        <option value="dinheiro">Dinheiro</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+      Confirmar Pedido
+    </button>
+  </form>
+
+</div>
+{% endblock %}

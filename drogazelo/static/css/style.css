@@ -1,9 +1,14 @@
+/* =========================
+   BASE
+========================= */
 body {
     background-color: #f5f6f8;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* NAVBAR */
+/* =========================
+   NAVBAR
+========================= */
 .navbar {
     box-shadow: 0 2px 10px rgba(0,0,0,0.15);
 }
@@ -13,12 +18,16 @@ body {
     font-size: 1.4rem;
 }
 
-/* BOTÕES */
+/* =========================
+   BOTÕES (PADRÃO)
+========================= */
 .btn {
     border-radius: 8px;
     font-weight: 500;
+    transition: all 0.2s ease-in-out;
 }
 
+/* Verde principal */
 .btn-success {
     background-color: #1f9d55;
     border: none;
@@ -28,12 +37,32 @@ body {
     background-color: #168a47;
 }
 
+/* Vermelho principal */
 .btn-danger {
     background-color: #dc3545;
     border: none;
 }
 
-/* CARDS */
+.btn-danger:hover {
+    background-color: #bb2d3b;
+}
+
+/* =========================
+   BOTÕES DO CARRINHO (+ / -)
+========================= */
+.btn-quantidade {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 16px;
+    line-height: 34px;
+    text-align: center;
+}
+
+/* =========================
+   CARDS
+========================= */
 .card {
     border-radius: 12px;
     border: none;
@@ -42,14 +71,16 @@ body {
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
 }
 
 .card-title {
     font-weight: bold;
 }
 
-/* TABELA */
+/* =========================
+   TABELAS
+========================= */
 .table {
     background-color: white;
     border-radius: 12px;
@@ -60,29 +91,63 @@ body {
     background-color: #f1f1f1;
 }
 
-/* ALERTAS */
+/* =========================
+   ALERTAS
+========================= */
 .alert {
     border-radius: 10px;
 }
 
-/* FORM */
+/* =========================
+   FORMULÁRIOS
+========================= */
 .form-control,
 .form-select,
 textarea {
     border-radius: 8px;
 }
 
-/* TÍTULOS */
+/* =========================
+   TÍTULOS
+========================= */
 h2, h4 {
     font-weight: bold;
     color: #333;
 }
 
-/* FOOTER SIMPLES */
+/* =========================
+   FOOTER
+========================= */
 .footer {
     margin-top: 60px;
     padding: 20px;
     background-color: #dc3545;
     color: white;
     text-align: center;
+}
+
+/* =========================
+   BOTÃO FINALIZAR COMPRA
+========================= */
+.btn-finalizar {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+}
+/* Botões pequenos de quantidade */
+.btn-quantidade {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 16px;
+    line-height: 34px;
+    text-align: center;
+}
+
+/* Botão finalizar */
+.btn-finalizar {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    border-radius: 30px;
 }
