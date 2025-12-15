@@ -50,6 +50,12 @@
   </div>
 </nav>
 
+<main class="flex-fill">
+    {% block content %}
+    {% endblock %}
+</main>
+
+
 <div class="container mt-4">
     {% if messages %}
         {% for message in messages %}

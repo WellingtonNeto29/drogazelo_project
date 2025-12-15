@@ -8,7 +8,6 @@ def checkout_view(request):
     itens = []
     total = 0
 
-    # Montar itens do carrinho
     for produto_id, quantidade in carrinho.items():
         produto = Produto.objects.get(id=produto_id)
         subtotal = produto.preco * quantidade
@@ -20,22 +19,21 @@ def checkout_view(request):
             'subtotal': subtotal
         })
 
-    # SE FOR POST → confirmar pedido
     if request.method == 'POST':
+        # Dados do formulário
         nome = request.POST.get('nome')
         telefone = request.POST.get('telefone')
         endereco = request.POST.get('endereco')
         pagamento = request.POST.get('pagamento')
 
-        # 🔹 aqui futuramente entra banco de dados
-
-        # Limpar carrinho
+        # Limpa carrinho
         request.session['carrinho'] = {}
         request.session.modified = True
 
-        return render(request, 'checkout/sucesso.html')
+        return render(request, 'checkout/sucesso.html', {
+            'nome': nome
+        })
 
-    # SE FOR GET → mostrar formulário
     return render(request, 'checkout/checkout.html', {
         'itens': itens,
         'total': total

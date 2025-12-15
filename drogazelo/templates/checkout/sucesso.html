@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5 text-center">
+
+    <div class="card shadow-sm p-5">
+        <h2 class="text-success mb-3">
+            ✅ Pedido realizado com sucesso!
+        </h2>
+
+        <p class="fs-5">
+            Obrigado pela sua compra.
+        </p>
+
+        <p class="fs-6 text-muted">
+            Seu pedido foi recebido e está sendo processado.
+        </p>
+
+        <!-- 🔹 MENSAGEM DE ENTREGA -->
+        <div class="alert alert-info mt-4">
+            ⏱️ <strong>Previsão de entrega:</strong> entre <strong>1 a 2 horas</strong>.
+        </div>
+
+        <a href="{% url 'produtos:lista_produtos' %}" class="btn btn-danger mt-3">
+            Voltar para a loja
+        </a>
+    </div>
+
+</div>
+{% endblock %}
