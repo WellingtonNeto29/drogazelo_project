@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from produtos.models import Produto
+from checkout.models import Pedido
+from logistica.models import Entrega
+from django.db import transaction
 
 @login_required
 def checkout_view(request):
@@ -25,6 +28,23 @@ def checkout_view(request):
         telefone = request.POST.get('telefone')
         endereco = request.POST.get('endereco')
         pagamento = request.POST.get('pagamento')
+
+        with transaction.atomic():
+            # Criar o Pedido
+            pedido = Pedido.objects.create(
+                usuario=request.user,
+                endereco=endereco,
+                telefone=telefone,
+                metodo_pagamento=pagamento,
+                total=total
+            )
+
+            # Criar a Entrega para o entregador
+            Entrega.objects.create(
+                pedido=pedido,
+                endereco_entrega=endereco,
+                status='Pendente'
+            )
 
         # Limpa carrinho
         request.session['carrinho'] = {}

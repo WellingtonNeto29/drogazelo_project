@@ -26,6 +26,12 @@
             Olá, {{ user.username }}
         </span>
 
+        {% if user.entregador_perfil %}
+          <a href="{% url 'logistica:painel' %}" class="btn btn-warning text-dark me-2">
+            🚚 Painel Entregador
+          </a>
+        {% endif %}
+
         <a href="{% url 'carrinho:ver' %}" class="btn btn-light">
           🛒 Carrinho
         </a>

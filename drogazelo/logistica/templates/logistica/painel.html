@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Painel do Entregador</h2>
+    <p>Bem-vindo, {{ entregador.user.get_full_name|default:entregador.user.username }}</p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">Entregas Pendentes (Aguardando Aceite)</h5>
+                </div>
+                <div class="card-body">
+                    {% if entregas_pendentes %}
+                        <ul class="list-group list-group-flush">
+                        {% for entrega in entregas_pendentes %}
+                            <li class="list-group-item">
+                                <strong>Pedido:</strong> #{{ entrega.pedido.id }}<br>
+                                <strong>Cliente:</strong> {{ entrega.pedido.usuario.username }}<br>
+                                <strong>Endereço:</strong> {{ entrega.endereco_entrega }}<br>
+                                <strong>Criado em:</strong> {{ entrega.criado_em|date:"d/m/Y H:i" }}<br>
+                                <form method="post" action="{% url 'logistica:aceitar' entrega.id %}" class="mt-2">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success btn-sm">Aceitar Entrega</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">Nenhuma entrega pendente no momento.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Minhas Entregas (Em Rota)</h5>
+                </div>
+                <div class="card-body">
+                    {% if minhas_entregas %}
+                        <ul class="list-group list-group-flush">
+                        {% for entrega in minhas_entregas %}
+                            <li class="list-group-item">
+                                <strong>Pedido:</strong> #{{ entrega.pedido.id }}<br>
+                                <strong>Endereço:</strong> {{ entrega.endereco_entrega }}<br>
+                                <strong>Status Atual:</strong> {{ entrega.status }}<br>
+                                <form method="post" action="{% url 'logistica:atualizar' entrega.id %}" class="mt-2">
+                                    {% csrf_token %}
+                                    <select name="status" class="form-select form-select-sm d-inline-block w-auto" onchange="this.form.submit()">
+                                        {% for code, name in entrega.STATUS_CHOICES %}
+                                            <option value="{{ code }}" {% if entrega.status == code %}selected{% endif %}>{{ name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </form>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">Nenhuma entrega em rota.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
